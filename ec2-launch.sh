@@ -32,9 +32,9 @@ fi
 sleep 10
 IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=${COMPONENT}" | jq .Reservations[].Instances[].PrivateIpAddress | sed 's/"//g' | grep -v null)
 ##Update the DNS Record
-#sed -e "s/IP/${IP}/" -e "s/COMPONENT/${COMPONENT}/" record.json > /tmp/record.json
-sed -e "s/IP/${IP}/" -e "s/COMPONENT/${COMPONENT}/" record.json >/tmp/record1.json
-aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file:///tmp/record1.json | jq
+sed -e "s/IP/${IP}/" -e "s/COMPONENT/${COMPONENT}/" record.json >/tmp/record.json
+#sed -e "s/IP/${IP}/" -e "s/COMPONENT/${COMPONENT}/" record.json >/tmp/record1.json
+aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file:///tmp/record.json | jq
 }
 if [ "$COMPONENT" == "all" ]; then
   for comp in frontend mongodb catalogue user cart shipping rabbitmq redis mysql payment dispatch; do
