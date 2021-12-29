@@ -34,7 +34,7 @@ IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=${COMPONENT}" | 
 ##Update the DNS Record
 #sed -e "s/IP/${IP}/" -e "s/COMPONENT/${COMPONENT}/" record.json > /tmp/record.json
 sed -e "s/IP/${IP}/" -e "s/COMPONENT/${COMPONENT}/" record.json >/tmp/record1.json
-aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file:///tmp/record.json | jq
+aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file:///tmp/record1.json | jq
 }
 if [ "$COMPONENT" == "all" ]; then
   for comp in frontend mongodb catalogue user cart shipping rabbitmq redis mysql payment dispatch; do
