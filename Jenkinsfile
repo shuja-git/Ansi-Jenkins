@@ -15,7 +15,7 @@ pipeline{
             script {
                 env.ANSIBLE_TAG=COMPONENT.toUpperCase()
              }
-                sh 'ansible-playbook -i rroboshop.inv rroboshop.yml -e ENV=${ENV} -t ${ANSIBLE_TAG}'
+                sh 'ansible-playbook -i roboshop.inv roboshop.yml -e ENV=${ENV} -t ${ANSIBLE_TAG}'
             }
         }
     }
