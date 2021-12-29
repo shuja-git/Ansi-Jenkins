@@ -7,7 +7,7 @@ pipeline{
     stages {
         stage('create server'){
             steps {
-                sh 'bash ec2-launch.sh ${COMPONENT}' ${ENV}
+                sh 'bash ec2-launch.sh ${COMPONENT} ${ENV}'
             }
         }
         stage('Ansible Playbook run') {
