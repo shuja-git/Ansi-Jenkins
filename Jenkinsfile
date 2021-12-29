@@ -5,7 +5,7 @@ pipeline{
     string(name: 'COMPONENT', defaultValue: '', description: 'Which app component?')
     }
     environment {
-        SSH = credentials('CENTOS')
+        SSH = credentials('SCENTOS')
     }
     stages {
         stage('create server'){
