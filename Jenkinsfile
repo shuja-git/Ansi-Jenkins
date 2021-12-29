@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent { label 'JENKINSNODE'}
     parameters {
      choice(name: 'ENV', choices: ['DEV', 'PROD'], description: 'choose env')
     string(name: 'COMPONENT', defaultValue: '', description: 'Which app component?')
