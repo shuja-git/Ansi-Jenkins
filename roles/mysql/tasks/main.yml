@@ -1,0 +1,98 @@
+#  As per the Application need, we are choosing MySQL 5.7 version.
+#
+
+#
+
+
+#
+#
+#    # mysql_secure_installation
+#
+#    You can check the new password working or not using the following command.
+#
+#    # mysql -u root -p
+#
+#    Run the following SQL commands to remove the password policy.
+#    > uninstall plugin validate_password;
+#    Setup Needed for Application.
+#    As per the architecture diagram, MySQL is needed by
+#
+#    Shipping Service
+#    So we need to load that schema into the database, So those applications will detect them and run accordingly.
+#
+#    To download schema, Use the following command
+#
+#    # curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip"
+#    Load the schema for Services.
+#
+#    # cd /tmp
+#    # unzip mysql.zip
+#    # cd mysql-main
+#  # mysql -u root -pRoboShop@1 <shipping.sql
+#------------------------------------------------------------------------
+#    Setup MySQL Repo
+#    # curl -s -L -o /etc/yum.repos.d/mysql.repo https://raw.githubusercontent.com/roboshop-devops-project/mysql/main/mysql.repo
+- name: Copy mysql repo
+  ansible.builtin.copy:
+    src: mysql.repo
+    dest: /etc/yum.repos.d/mysql.repo
+#------------------------------------
+#    Install MySQL
+#    # yum install mysql-community-server -y
+- name: Install mysql server & Ansible mysql module
+  ansible.builtin.yum:
+    name:
+      - mysql-community-server
+      - MySQL-python
+    state: installed
+#------------------------------------
+#    Start MySQL.
+#    # systemctl enable mysqld
+#    # systemctl start mysqld
+
+- name: Start Mysql Service
+  ansible.builtin.systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+#-----------------
+#    Now a default root password will be generated and given in the log file.
+#    # grep temp /var/log/mysqld.log
+#(google: grep a word in a file ansible)
+- name: Grab default password
+  ansible.builtin.shell:  grep 'temporary password' /var/log/mysqld.log  | awk '{print $NF}'
+  register: mysql_default_password
+
+#- name: print the password
+#  debug:
+#    msg: "{{mysql_default_password.stdout}}"
+-
+#  Next, We need to change the default root password in order to start using the database service.
+# create a dir 'templates' in mysql role and in that create a file 'root-pass-reset.sql' and
+# paste ALTER USER 'root'@'localhost' IDENTIFIED BY '{{MYSQL_ROOT_PASSWORD}}'; and declare this
+# variable by creating a dir 'vars' in mysql role and in that create a file 'main.yml'
+# MYSQL_ROOT_PASSWORD: Roboshop@1 (here we are hardcoding the password so that if no password is
+# entered then it will take this password and if password is entered then it will override this password
+
+- name: copy sql script for password reset
+  ansible.builtin.template:
+    src: root-pass-reset.sql
+    dest: /tmp/root-pass-reset.sql
+
+# change the password
+#(google: mysql module ansible) here click on 'communityMysql'
+
+#- name: change the password
+#  community.mysql.mysql_db:
+#     state: import
+#     name: all
+#     target: /tmp/root-pass-reset.sql
+#     login_password: root
+#     login_user: "{{mysql_default_password.stdout}}"
+
+#mysql supports only one command to connect to the database for expired password which is mysql
+# command line. So use shell module not the above one:
+- name: change the password
+  ansible.builtin.shell:  mysql --connect-expired-password -uroot -p"{{mysql_default_password.stdout}}" </tmp/root-pass-reset.sql
+
+

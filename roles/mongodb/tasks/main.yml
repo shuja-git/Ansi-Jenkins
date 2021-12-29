@@ -1,0 +1,93 @@
+
+#  Setup MongoDB repos.
+#    # curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo
+#    & Start Service.
+#    # yum install -y mongodb-org
+#    # systemctl enable mongod
+#    # systemctl start mongod
+#    Update Liste IP address from 127.0.0.1 to 0.0.0.0 in config file
+#     (google: search and replace ansible module)
+#  Config file: /etc/mongod.conf
+#
+#    then restart the service
+#
+#    # systemctl restart mongod
+#    Every Database needs the schema to be loaded for the application to work.
+#    Download the schema and load it.
+#
+#  # curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"
+#
+
+#  #
+#-----------------------------------------------------------------
+#create a directory 'files' in that create a file 'mongo.repo' and copy
+# repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo
+- name: Copy MongoDB repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+# Install Mongo----------------------
+- name: Install MongoDB
+  ansible.builtin.yum:
+    name: mongodb-org
+    state: installed
+#-----------------------
+# Update Liste IP address from 127.0.0.1 to 0.0.0.0 in config file
+- name: Update MongoDB config file to listen on 0.0.0.0
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+#--------------------------
+# start mongod
+- name: Start MongoDB Service
+  ansible.builtin.systemd:
+    name: mongod
+    state: started
+    enabled: yes
+#------------------------------
+## curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"
+#- name: Download and Unzip the Frontend content
+#  ansible.builtin.unarchive:
+#    src: https://github.com/roboshop-devops-project/frontend/archive/main.zip
+#    dest: /tmp
+#    remote_src: yes
+# as the above code is common between frontend and mongodb and other components
+# so we create a directory with name 'common' and in that create another dir tasks
+# and in that create a file 'download.yml' in that file paste the module and change
+# the frontend or mongodb with variable {COMPONENT}. create a var dir and in that main.yml
+# and declare COMPONENT: frontend, similary create in mongodb dir also and declare
+# COMPONENT: mongodb
+# (paste the below module in download.yml file.)
+# - name: Download and Unzip the {COMPONENT} content
+#  ansible.builtin.unarchive:
+#    src: https://github.com/roboshop-devops-project/{COMPONENT}/archive/main.zip
+#    dest: /tmp
+#    remote_src: yes
+# So common is a role and inside
+## that there is a task file i want to call that(google: import a role ansible)
+
+- name: Download MongoDB Schema files
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: download
+#-----------------------------------
+#  # cd /tmp
+#  # unzip mongodb.zip
+#  # cd mongodb-main
+#  mongo < catalogue.js
+#  # mongo < users.js
+#(google: mongodb ansible module)->mongodb-shell
+#(idempotent=yes means it will not create schema every time if schema is already there)
+#idempotent will make sure that whatever schema mentioned it should be there
+#idempotency is a feature of configuration management tool like ansible.
+- name: Load Catalogue Schema
+  community.mongodb.mongodb_shell:
+     file: "/tmp/mongodb-main/catalogue.js"
+     idempotent: yes
+#
+- name: Load Users Schema
+  community.mongodb.mongodb_shell:
+    file: "/tmp/mongodb-main/users.js"
+    idempotent: yes

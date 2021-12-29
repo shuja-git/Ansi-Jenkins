@@ -1,0 +1,34 @@
+
+#
+#--------------------------------------------------------------------------------------------------
+# curl -L https://raw.githubusercontent.com/roboshop-devops-project/redis/main/redis.repo -o /etc/yum.repos.d/redis.repo
+
+- name: Copy redis repo file
+  ansible.builtin.copy:
+    src: redis.repo
+    dest: /etc/yum.repos.d/redis.repo
+
+#  # yum install redis -y
+
+- name: Install redis
+  ansible.builtin.yum:
+    name: redis
+    state: installed
+
+#Update the BindIP from 127.0.0.1 to 0.0.0.0 in config file /etc/redis.conf & /etc/redis/redis.conf
+
+- name: Update redis config file to listen on 0.0.0.0
+  ansible.builtin.replace:
+    path: /etc/redis.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+    backup: yes
+# systemctl enable redis
+# systemctl start redis
+
+- name: Start redis Service
+  ansible.builtin.systemd:
+    name: redis
+    state: started
+    enabled: yes
+
