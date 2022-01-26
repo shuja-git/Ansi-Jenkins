@@ -19,11 +19,25 @@
 #      ansible.builtin.debug:
 #        msg: a = {{a}}, {{URL}}
 #----------(ii)variables from a file
-- name: accessing var from file
+#- name: accessing var from file
+#  hosts: all
+#  vars_files:
+#    - sample-vars.yml
+#  tasks:
+#    - name: printing var from file
+#      ansible.builtin.debug:
+#        msg: "{{URL}}"
+#----------(iii)Task level variable
+- name: Demo on Task level variable
   hosts: all
-  vars_files:
-    - sample-vars.yml
   tasks:
-    - name: printing var from file
+    - name: printing task1 variable
       ansible.builtin.debug:
-        msg: "{{URL}}"
+        msg: "{{URL1}}"
+      vars:
+        URL1: www.example.come
+    - name: Printing task2 variable
+      ansible.builtin.debug:
+        msg: "{{URL2}}"
+      vars:
+        URL2: www.example2.com
