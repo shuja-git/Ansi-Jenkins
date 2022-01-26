@@ -61,4 +61,4 @@
   tasks:
     - name: printing remote node info from Facts vars
       ansible.builtin.debug:
-        msg: "{{ansible_hostname}}", "{{ansible_fqdn}}", "{{ansible_nodename}}"
+        msg: Hostname = {{ansible_hostname}}, fqdn = {{ansible_fqdn}}, node = {{ansible_nodename}}
