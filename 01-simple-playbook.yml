@@ -48,3 +48,10 @@
     - name: task accessing inv var
       ansible.builtin.debug:
         msg: "{{URL}}"
+#-------------(v)command line variables
+- name: Demo on Command Line Variables
+  hosts: all
+  tasks:
+    - name: task with command line var
+      ansible.builtin.debug:
+        msg: "{{URL}}"
