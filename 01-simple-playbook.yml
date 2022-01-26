@@ -28,16 +28,23 @@
 #      ansible.builtin.debug:
 #        msg: "{{URL}}"
 #----------(iii)Task level variable
-- name: Demo on Task level variable
+#- name: Demo on Task level variable
+#  hosts: all
+#  tasks:
+#    - name: printing task1 variable
+#      ansible.builtin.debug:
+#        msg: "{{URL1}}"
+#      vars:
+#        URL1: www.example.come
+#    - name: Printing task2 variable
+#      ansible.builtin.debug:
+#        msg: "{{URL2}}"
+#      vars:
+#        URL2: www.example2.com
+#-----------(iv)Inventory level variable
+- name: Demo on Inventory Level variable
   hosts: all
   tasks:
-    - name: printing task1 variable
+    - name: task accessing inv var
       ansible.builtin.debug:
-        msg: "{{URL1}}"
-      vars:
-        URL1: www.example.come
-    - name: Printing task2 variable
-      ansible.builtin.debug:
-        msg: "{{URL2}}"
-      vars:
-        URL2: www.example2.com
+        msg: "{{URL}}"
