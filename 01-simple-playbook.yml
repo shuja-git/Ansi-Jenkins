@@ -55,10 +55,16 @@
 #    - name: task with command line var
 #      ansible.builtin.debug:
 #        msg: "{{URL}}"
-#--------------Facts variables
-- name: Demo on Facts Variables
+#-------------(vi)Facts variables
+#- name: Demo on Facts Variables
+#  hosts: all
+#  tasks:
+#    - name: printing remote node info from Facts vars
+#      ansible.builtin.debug:
+#        msg: Hostname = {{ansible_hostname}}, fqdn = {{ansible_fqdn}}, node = {{ansible_nodename}}
+#------------register variable
+- name: Demo on register var
   hosts: all
   tasks:
-    - name: printing remote node info from Facts vars
-      ansible.builtin.debug:
-        msg: Hostname = {{ansible_hostname}}, fqdn = {{ansible_fqdn}}, node = {{ansible_nodename}}
+    - name: uptime command
+      ansible.builtin.shell: uptime
