@@ -1,67 +1,67 @@
 #--------displaying message from playbook play
-#- name: demo on playbook
-#  hosts: all
-#  tasks:
-#  - name: task1
-#    ansible.builtin.debug:
-#      msg: Hello from Playbook play
+- name: demo on playbook
+  hosts: all
+  tasks:
+  - name: task1
+    ansible.builtin.debug:
+      msg: Hello from Playbook play
 #----------(i)Pre-defined variable from user(hardcoded)
-#- name: demo of var from user hardcoded
-#  hosts: all
-#  vars:
-#    URL: www.example.com
-#    a: 1000
-#  tasks:
-#    - name: print var at task1
-#      ansible.builtin.debug:
-#        msg: URL = {{URL}}
-#    - name: print var at task2
-#      ansible.builtin.debug:
-#        msg: a = {{a}}, {{URL}}
+- name: demo of var from user hardcoded
+  hosts: all
+  vars:
+    URL: www.example.com
+    a: 1000
+  tasks:
+    - name: print var at task1
+      ansible.builtin.debug:
+        msg: URL = {{URL}}
+    - name: print var at task2
+      ansible.builtin.debug:
+        msg: a = {{a}}, {{URL}}
 #----------(ii)variables from a file
-#- name: accessing var from file
-#  hosts: all
-#  vars_files:
-#    - sample-vars.yml
-#  tasks:
-#    - name: printing var from file
-#      ansible.builtin.debug:
-#        msg: "{{URL}}"
+- name: accessing var from file
+  hosts: all
+  vars_files:
+    - sample-vars.yml
+  tasks:
+    - name: printing var from file
+      ansible.builtin.debug:
+        msg: "{{URL}}"
 #----------(iii)Task level variable
-#- name: Demo on Task level variable
-#  hosts: all
-#  tasks:
-#    - name: printing task1 variable
-#      ansible.builtin.debug:
-#        msg: "{{URL1}}"
-#      vars:
-#        URL1: www.example.come
-#    - name: Printing task2 variable
-#      ansible.builtin.debug:
-#        msg: "{{URL2}}"
-#      vars:
-#        URL2: www.example2.com
+- name: Demo on Task level variable
+  hosts: all
+  tasks:
+    - name: printing task1 variable
+      ansible.builtin.debug:
+        msg: "{{URL1}}"
+      vars:
+        URL1: www.example.come
+    - name: Printing task2 variable
+      ansible.builtin.debug:
+        msg: "{{URL2}}"
+      vars:
+        URL2: www.example2.com
 #-----------(iv)Inventory level variable
-#- name: Demo on Inventory Level variable
-#  hosts: all
-#  tasks:
-#    - name: task accessing inv var
-#      ansible.builtin.debug:
-#        msg: "{{URL}}"
-##-------------(v)command line variables
-#- name: Demo on Command Line Variables
-#  hosts: all
-#  tasks:
-#    - name: task with command line var
-#      ansible.builtin.debug:
-#        msg: "{{URL}}"
+- name: Demo on Inventory Level variable
+  hosts: all
+  tasks:
+    - name: task accessing inv var
+      ansible.builtin.debug:
+        msg: "{{URL}}"
+#-------------(v)command line variables
+- name: Demo on Command Line Variables
+  hosts: all
+  tasks:
+    - name: task with command line var
+      ansible.builtin.debug:
+        msg: "{{URL}}"
 #-------------(vi)Facts variables
-#- name: Demo on Facts Variables
-#  hosts: all
-#  tasks:
-#    - name: printing remote node info from Facts vars
-#      ansible.builtin.debug:
-#        msg: Hostname = {{ansible_hostname}}, fqdn = {{ansible_fqdn}}, node = {{ansible_nodename}}
+- name: Demo on Facts Variables
+  hosts: all
+  tasks:
+    - name: printing remote node info from Facts vars
+      ansible.builtin.debug:
+        msg: Hostname = {{ansible_hostname}}, fqdn = {{ansible_fqdn}}, node = {{ansible_nodename}}
 #------------register variable
 - name: Demo on register var
   hosts: all
@@ -72,3 +72,6 @@
     - name: Print Output
       ansible.builtin.debug:
         msg: "{{out.stdout}}"
+    - name: Declare a variable
+      ansible.builtin.set_fact:
+        CMD_OUTPUT: "{{out.stdout}}"
