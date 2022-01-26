@@ -1,6 +1,20 @@
-- name: demo on playbook
+#--------displaying message from playbook play
+#- name: demo on playbook
+#  hosts: all
+#  tasks:
+#  - name: task1
+#    ansible.builtin.debug:
+#      msg: Hello from Playbook play
+#----------(i)Pre-defined variable from user(hardcoded)
+- name: demo of var from user hardcoded
   hosts: all
+  vars:
+    URL: www.example.com
+    a: 1000
   tasks:
-  - name: task1
-    ansible.builtin.debug:
-      msg: Hello from Playbook play
+    - name: print var at task1
+      ansible.builtin.debug:
+        msg: URL = {{URL}}
+    - name: print var at task2
+      ansible.builtin.debug:
+        msg: a = {{a}}, {{URL}}
