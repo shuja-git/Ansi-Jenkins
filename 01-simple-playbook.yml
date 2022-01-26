@@ -6,15 +6,24 @@
 #    ansible.builtin.debug:
 #      msg: Hello from Playbook play
 #----------(i)Pre-defined variable from user(hardcoded)
-- name: demo of var from user hardcoded
+#- name: demo of var from user hardcoded
+#  hosts: all
+#  vars:
+#    URL: www.example.com
+#    a: 1000
+#  tasks:
+#    - name: print var at task1
+#      ansible.builtin.debug:
+#        msg: URL = {{URL}}
+#    - name: print var at task2
+#      ansible.builtin.debug:
+#        msg: a = {{a}}, {{URL}}
+#----------(ii)variables from a file
+- name: accessing var from file
   hosts: all
-  vars:
-    URL: www.example.com
-    a: 1000
+  vars_files:
+    - sample-vars.yml
   tasks:
-    - name: print var at task1
+    - name: printing var from file
       ansible.builtin.debug:
-        msg: URL = {{URL}}
-    - name: print var at task2
-      ansible.builtin.debug:
-        msg: a = {{a}}, {{URL}}
+        msg: {{URL}}
