@@ -42,16 +42,23 @@
 #      vars:
 #        URL2: www.example2.com
 #-----------(iv)Inventory level variable
-- name: Demo on Inventory Level variable
+#- name: Demo on Inventory Level variable
+#  hosts: all
+#  tasks:
+#    - name: task accessing inv var
+#      ansible.builtin.debug:
+#        msg: "{{URL}}"
+##-------------(v)command line variables
+#- name: Demo on Command Line Variables
+#  hosts: all
+#  tasks:
+#    - name: task with command line var
+#      ansible.builtin.debug:
+#        msg: "{{URL}}"
+#--------------Facts variables
+- name: Demo on Facts Variables
   hosts: all
   tasks:
-    - name: task accessing inv var
+    - name: printing remote node info from Facts vars
       ansible.builtin.debug:
-        msg: "{{URL}}"
-#-------------(v)command line variables
-- name: Demo on Command Line Variables
-  hosts: all
-  tasks:
-    - name: task with command line var
-      ansible.builtin.debug:
-        msg: "{{URL}}"
+        msg: "{{ansible_hostname}}", "{{ansible_fqdn}}", "{{ansible_nodename}}"
