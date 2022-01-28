@@ -4,8 +4,8 @@
   tasks:
   - name: task1
       ansible.builtin.yum:
-        name: nginx
-        state: installed
+         name: nginx
+         state: installed
 
 #    ansible.builtin.debug:
 #      msg: Hello from Playbook play
