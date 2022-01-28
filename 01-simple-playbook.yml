@@ -3,8 +3,13 @@
   hosts: FRONTEND
   tasks:
   - name: task1
-    ansible.builtin.debug:
-      msg: Hello from Playbook play
+      ansible.builtin.yum:
+        name: nginx
+        state: installed
+
+#    ansible.builtin.debug:
+#      msg: Hello from Playbook play
+
 #----------(i)Pre-defined variable from user(hardcoded)
 - name: demo of var from user hardcoded
   hosts: all
