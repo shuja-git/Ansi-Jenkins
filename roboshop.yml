@@ -12,7 +12,7 @@
 - name: mongodb setup
   hosts: MONGODB
   become: yes
-  tags: MONGODB
+#  tags: MONGODB
   roles:
     - mongodb
 #
