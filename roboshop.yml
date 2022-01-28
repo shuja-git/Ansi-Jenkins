@@ -10,7 +10,7 @@
 #    - frontend
 #
 - name: mongodb setup
-  hosts: mongodb
+  hosts: MONGODB
   become: yes
   tags: MONGODB
   roles:
