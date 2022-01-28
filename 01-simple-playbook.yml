@@ -1,6 +1,6 @@
 #--------displaying message from playbook play
 - name: demo on playbook
-  hosts: all
+  hosts: FRONTEND
   tasks:
   - name: task1
     ansible.builtin.debug:
