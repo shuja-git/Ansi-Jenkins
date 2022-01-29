@@ -15,37 +15,37 @@
 #
 ## systemctl restart nginx
 
-
-- name: Install nginx
-  ansible.builtin.yum:
-    name: nginx
-    state: installed
-
-
-- name: Download and Unzip the Frontend content
-  ansible.builtin.import_role:
-    name: common
-    tasks_from: download
-
-
-- name: remove old Html web pages
-  ansible.builtin.file:
-    path: /usr/share/nginx/html
-    state: absent
-
-- name: copy the HTML file
-  ansible.builtin.copy:
-    src: /tmp/frontend-main/static/
-    dest: /usr/share/nginx/html/
-    remote_src: yes
-
-- name: copy roboshop reverse proxy configuration
-  ansible.builtin.template:
-    src: roboshop.conf
-    dest: /etc/nginx/default.d/roboshop.conf
-
-- name: restart
-  ansible.builtin.systemd:
-    name: nginx
-    state: restarted
-    enabled: yes
+#
+#- name: Install nginx
+#  ansible.builtin.yum:
+#    name: nginx
+#    state: installed
+#
+#
+#- name: Download and Unzip the Frontend content
+#  ansible.builtin.import_role:
+#    name: common
+#    tasks_from: download
+#
+#
+#- name: remove old Html web pages
+#  ansible.builtin.file:
+#    path: /usr/share/nginx/html
+#    state: absent
+#
+#- name: copy the HTML file
+#  ansible.builtin.copy:
+#    src: /tmp/frontend-main/static/
+#    dest: /usr/share/nginx/html/
+#    remote_src: yes
+#
+#- name: copy roboshop reverse proxy configuration
+#  ansible.builtin.template:
+#    src: roboshop.conf
+#    dest: /etc/nginx/default.d/roboshop.conf
+#
+#- name: restart
+#  ansible.builtin.systemd:
+#    name: nginx
+#    state: restarted
+#    enabled: yes

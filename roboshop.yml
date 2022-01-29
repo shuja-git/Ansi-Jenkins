@@ -9,12 +9,12 @@
 #  roles:
 #    - frontend
 #
-- name: mongodb setup
-  hosts: MONGODB
-  become: yes
-#  tags: MONGODB
-  roles:
-    - mongodb
+#- name: mongodb setup
+#  hosts: MONGODB
+#  become: yes
+##  tags: MONGODB
+#  roles:
+#    - mongodb
 #
 #- name: catalogue setup
 #  hosts: catalogue

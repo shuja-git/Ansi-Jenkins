@@ -1,14 +1,14 @@
 #--------displaying message from playbook play
 - name: demo on playbook
-  hosts: FRONTEND
+  hosts: all
   tasks:
   - name: task1
-      ansible.builtin.yum:
-         name: nginx
-         state: installed
+#      ansible.builtin.yum:
+#         name: nginx
+#         state: installed
 
-#    ansible.builtin.debug:
-#      msg: Hello from Playbook play
+    ansible.builtin.debug:
+      msg: Hello from Playbook play
 
 #----------(i)Pre-defined variable from user(hardcoded)
 - name: demo of var from user hardcoded
